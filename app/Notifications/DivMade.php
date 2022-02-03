@@ -57,6 +57,7 @@ public $description;
     public function toArray($notifiable)
     {
         return [
+            
             'title' => $this->title,
             'description' => $this->description
         ];
