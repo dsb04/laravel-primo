@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class MakeDiv implements ShouldQueue
+
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -62,6 +63,5 @@ class MakeDiv implements ShouldQueue
         } catch (\Throwable $th) {
             logger()->error('Erro = ' . $th);
         }
-    }
     }
 }
