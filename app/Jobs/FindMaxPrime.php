@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use App\Notifications\PrimeFound;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class FindMaxPrime implements ShouldQueue
 {
@@ -34,7 +36,7 @@ class FindMaxPrime implements ShouldQueue
      */
     public function handle()
     {
-        $inicio = localtime();
+ 
         $primo = 1;
         for($num = 1; $num < $this->limit; $num++){
             for($div = 2; $div<$num; $div++){
@@ -47,7 +49,13 @@ class FindMaxPrime implements ShouldQueue
 
             }
         }
-        $fim = localtime();
-        logger()->info(' O maior primo é ' . $primo);
+        
+        logger()->info('O maior primo até ' . $this->limit . ' é ' . $primo);
+
+        $user = User::find($this->userId);
+        $user->notify(new PrimeFound(
+            'Sucesso!',
+            'O maior primo ate ' . $this->limit . ' eh ' . $primo
+        ));
     }
 }
