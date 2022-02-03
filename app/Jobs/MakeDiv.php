@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +22,7 @@ class MakeDiv implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(int $num1,int $num2,int $userId)
+    public function __construct(int $num1, int $num2, int $userId)
     {
         $this->num1 = $num1;
         $this->num2 = $num2;
@@ -47,9 +47,8 @@ class MakeDiv implements ShouldQueue
                     'Divisão por zero'
                     )
                 );
-            }catch (\Throwable $th) {
-                logger()->error('Erro = ' . $th);
             }
+
             $div = $this->num1 / $this->num2;
             $user = User::find($this->userId);
             logger()->info('Div = ' . $div);
@@ -59,7 +58,9 @@ class MakeDiv implements ShouldQueue
                 'Div = ' . $div
             )
         );
-        } 
+        } catch (\Throwable $th) {
+            logger()->error('Erro = ' . $th);
+        }
     }
     }
 }
