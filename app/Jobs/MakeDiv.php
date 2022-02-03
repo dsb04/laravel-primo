@@ -47,8 +47,9 @@ class MakeDiv implements ShouldQueue
                     'Divisão por zero'
                     )
                 );
+            }catch (\Throwable $th) {
+                logger()->error('Erro = ' . $th);
             }
-
             $div = $this->num1 / $this->num2;
             $user = User::find($this->userId);
             logger()->info('Div = ' . $div);
@@ -58,9 +59,7 @@ class MakeDiv implements ShouldQueue
                 'Div = ' . $div
             )
         );
-        } catch (\Throwable $th) {
-            logger()->error('Erro = ' . $th);
-        }
+        } 
     }
     }
 }
